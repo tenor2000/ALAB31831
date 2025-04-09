@@ -87,8 +87,9 @@ router
 router.route("/:id/posts").get((req, res, next) => {
   const postContent = posts.filter((p) => p.userId == req.params.id);
 
-  if (postContent) res.json({ postContent });
-  else next();
+  if (postContent.length > 0) {
+    res.json({ postContent });
+  } else next(error(404, "No Posts Found with this User"));
 });
 
 router.route("/:id/comments").get((req, res, next) => {

@@ -23,7 +23,9 @@ router
       userPosts = userPosts.filter((p) => p.userId == userId);
     }
 
-    res.json({ userPosts, links });
+    if (userPosts.length > 0) {
+      res.json({ userPosts, links });
+    } else next(error(404, "No Posts Found for this user"));
   })
   .post((req, res, next) => {
     if (req.body.userId && req.body.title && req.body.content) {
