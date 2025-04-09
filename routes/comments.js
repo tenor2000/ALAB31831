@@ -25,10 +25,19 @@ router
       },
     ];
 
-    res.json({ comments, links });
+    let userComments = comments;
+
+    if (req.query.userId) {
+      userComments = userComments.filter((c) => c.userId == req.query.userId);
+    }
+
+    if (req.query.postId) {
+      userComments = userComments.filter((c) => c.postId == req.query.postId);
+    }
+
+    res.json({ userComments, links });
   })
-  .post((req, res) => {
-    console.log(req.body);
+  .post((req, res, next) => {
     if (req.body.userId && req.body.postId && req.body.body) {
       const comment = {
         id: comments[comments.length - 1].id + 1,
