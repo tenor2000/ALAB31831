@@ -15,7 +15,14 @@ router
       },
     ];
 
-    res.json({ posts, links });
+    // ADDITION
+    const userId = req.query.userId;
+    let userPosts = posts;
+    if (userId) {
+      userPosts = userPosts.filter((p) => p.userId == userId);
+    }
+
+    res.json({ userPosts, links });
   })
   .post((req, res, next) => {
     if (req.body.userId && req.body.title && req.body.content) {
