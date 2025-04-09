@@ -6,7 +6,7 @@ const error = require("../utilities/error");
 
 router
   .route("/")
-  .get((req, res) => {
+  .get((req, res, next) => {
     const links = [
       {
         href: "comments/:id",
@@ -35,7 +35,11 @@ router
       userComments = userComments.filter((c) => c.postId == req.query.postId);
     }
 
-    res.json({ userComments, links });
+    if (userComments.length > 0) {
+      res.json({ userComments, links });
+    } else {
+      next(error(404, "No Comments Found"));
+    }
   })
   .post((req, res, next) => {
     if (req.body.userId && req.body.postId && req.body.body) {
