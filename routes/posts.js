@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const posts = require("../data/posts");
+const comments = require("../data/comments");
 const error = require("../utilities/error");
 
 router
@@ -83,5 +84,22 @@ router
     if (post) res.json(post);
     else next();
   });
+
+// ADDITION
+router.route("/:id/comments").get((req, res, next) => {
+  let postComments = comments.filter((p) => {
+    return p.postId == req.params.id;
+  });
+
+  if (req.query.userId) {
+    postComments = postComments.filter((c) => {
+      return c.userId == req.query.userId;
+    });
+  }
+
+  if (postComments.length > 0) {
+    res.json(postComments);
+  } else next(error(404, "Post Not Found"));
+});
 
 module.exports = router;
