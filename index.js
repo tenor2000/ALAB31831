@@ -21,7 +21,8 @@ app.use((req, res, next) => {
     `-----
 ${time.toLocaleTimeString()}: Received a ${req.method} request to ${req.url}.`
   );
-  if (Object.keys(req.body).length > 0) {
+  // slight workaround here
+  if (req.body && Object.keys(req.body).length > 0) {
     console.log("Containing the data:");
     console.log(`${JSON.stringify(req.body)}`);
   }
